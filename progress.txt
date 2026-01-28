@@ -21,3 +21,11 @@
 - 18 tests passing (3 new reparenting tests)
 - Files changed: src/store.ts, src/Canvas.tsx, src/store.test.ts
 - Next: visual polish, entity type visual differentiation
+
+## Task 5: Entity type visual differentiation with icons (PRD issue #1, user story #23)
+- Added inline SVG icons to all 6 node types: server (Service), cylinder (Database), person (User), cloud (Cloud), grid (ServiceGroup), shield (Boundary)
+- Icons are color-matched to each node's accent color
+- Labels now use flex layout with icon + text side by side
+- 18 tests passing, typecheck clean
+- Files changed: src/nodes/{ServiceNode,DatabaseNode,UserNode,CloudNode,ServiceGroupNode,BoundaryNode}.tsx
+- Next: additional visual polish, sidebar improvements

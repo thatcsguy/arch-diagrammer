@@ -8,7 +8,10 @@ export function BoundaryNode({ data, selected }: NodeProps<DiagramNode>) {
         ${selected ? 'border-yellow-400/60' : 'border-[#3e4460]/60'}`}
       style={{ backgroundColor: 'rgba(30, 32, 48, 0.3)' }}
     >
-      <div className="text-xs text-yellow-400/80 font-semibold uppercase tracking-wide">
+      <div className="flex items-center gap-1.5 text-xs text-yellow-400/80 font-semibold uppercase tracking-wide">
+        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
         {data.name}
       </div>
     </div>
