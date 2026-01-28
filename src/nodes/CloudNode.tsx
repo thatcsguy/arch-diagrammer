@@ -1,7 +1,8 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import type { DiagramNode } from '../types';
+import { EditableName } from './EditableName';
 
-export function CloudNode({ data, selected }: NodeProps<DiagramNode>) {
+export function CloudNode({ id, data, selected }: NodeProps<DiagramNode>) {
   return (
     <div
       className={`px-4 py-3 rounded-lg border-2 bg-[#1e2030] min-w-[120px] text-center
@@ -13,7 +14,7 @@ export function CloudNode({ data, selected }: NodeProps<DiagramNode>) {
         </svg>
         <span className="text-xs text-cyan-400 font-semibold uppercase tracking-wide">Cloud</span>
       </div>
-      <div className="text-sm text-slate-200 font-medium">{data.name}</div>
+      <EditableName nodeId={id} name={data.name} />
       <Handle type="target" position={Position.Top} className="!bg-cyan-400 !w-2 !h-2" />
       <Handle type="source" position={Position.Bottom} className="!bg-cyan-400 !w-2 !h-2" />
     </div>

@@ -29,3 +29,10 @@
 - 18 tests passing, typecheck clean
 - Files changed: src/nodes/{ServiceNode,DatabaseNode,UserNode,CloudNode,ServiceGroupNode,BoundaryNode}.tsx
 - Next: additional visual polish, sidebar improvements
+
+## Task 6: Inline node renaming (PRD issue #1, user story #25)
+- Double-click node name in edit mode to rename inline (input field, Enter/blur to save, Escape to cancel)
+- Created shared `EditableName` component used by all 6 node types
+- 18 tests passing, typecheck clean
+- Files changed: src/nodes/EditableName.tsx (new), src/nodes/{ServiceNode,DatabaseNode,UserNode,CloudNode,ServiceGroupNode,BoundaryNode}.tsx
+- Next: all 25 PRD user stories complete; polish, custom field key editing/deletion
