@@ -36,3 +36,8 @@
 - 18 tests passing, typecheck clean
 - Files changed: src/nodes/EditableName.tsx (new), src/nodes/{ServiceNode,DatabaseNode,UserNode,CloudNode,ServiceGroupNode,BoundaryNode}.tsx
 - Next: all 25 PRD user stories complete; polish, custom field key editing/deletion
+
+## Issue #1 closed
+- All 25 PRD user stories implemented and verified
+- 18 tests passing, typecheck clean
+- Issue #1 closed on GitHub
