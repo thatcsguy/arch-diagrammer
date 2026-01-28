@@ -96,6 +96,48 @@ describe('DiagramState store', () => {
     expect(edge.data?.metadata).toBe('gRPC');
   });
 
+  it('reparents a node into a boundary', () => {
+    const store = useDiagramStore.getState();
+    store.addNode('boundary', { x: 100, y: 100 });
+    store.addNode('service', { x: 150, y: 150 });
+    const [boundary, service] = useDiagramStore.getState().nodes;
+
+    useDiagramStore.getState().reparentNode(service.id, boundary.id);
+    const updated = useDiagramStore.getState().nodes.find((n) => n.id === service.id)!;
+    expect(updated.parentId).toBe(boundary.id);
+    // Position should be relative to parent: 150-100=50
+    expect(updated.position).toEqual({ x: 50, y: 50 });
+  });
+
+  it('unparents a node from a boundary', () => {
+    const store = useDiagramStore.getState();
+    store.addNode('boundary', { x: 100, y: 100 });
+    store.addNode('service', { x: 150, y: 150 });
+    const [boundary, service] = useDiagramStore.getState().nodes;
+
+    useDiagramStore.getState().reparentNode(service.id, boundary.id);
+    useDiagramStore.getState().reparentNode(service.id, null);
+    const updated = useDiagramStore.getState().nodes.find((n) => n.id === service.id)!;
+    expect(updated.parentId).toBeUndefined();
+    // Should be back to absolute: 50+100=150
+    expect(updated.position).toEqual({ x: 150, y: 150 });
+  });
+
+  it('removing a boundary unparents its children', () => {
+    const store = useDiagramStore.getState();
+    store.addNode('boundary', { x: 100, y: 100 });
+    store.addNode('service', { x: 150, y: 150 });
+    const [boundary, service] = useDiagramStore.getState().nodes;
+
+    useDiagramStore.getState().reparentNode(service.id, boundary.id);
+    useDiagramStore.getState().removeNode(boundary.id);
+    const remaining = useDiagramStore.getState().nodes;
+    expect(remaining).toHaveLength(1);
+    expect(remaining[0].parentId).toBeUndefined();
+    // Position should be absolute again: 50+100=150
+    expect(remaining[0].position).toEqual({ x: 150, y: 150 });
+  });
+
   it('removes an edge', () => {
     const store = useDiagramStore.getState();
     store.addNode('service', { x: 0, y: 0 });

@@ -12,3 +12,12 @@
 - Removed redundant `label` sync from store's `updateEdgeData`
 - Files changed: src/Canvas.tsx, src/store.ts
 - Next: boundary drag-into/reparenting, visual polish
+
+## Task 4: Boundary drag-into/reparenting (PRD issue #1, user story #9)
+- Added `reparentNode(nodeId, boundaryId)` store action with position conversion (absolute ↔ relative)
+- Canvas `onNodeDragStop` detects overlap with boundary nodes and reparents automatically
+- Dragging a node out of a boundary unparents it
+- Removing a boundary unparents its children (preserving absolute positions)
+- 18 tests passing (3 new reparenting tests)
+- Files changed: src/store.ts, src/Canvas.tsx, src/store.test.ts
+- Next: visual polish, entity type visual differentiation

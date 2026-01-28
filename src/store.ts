@@ -27,6 +27,7 @@ interface Store {
   updateEdgeData: (id: string, data: Partial<{ label: string; metadata: string }>) => void;
   removeNode: (id: string) => void;
   removeEdge: (id: string) => void;
+  reparentNode: (nodeId: string, boundaryId: string | null) => void;
 
   getSerializableState: () => DiagramState;
   loadState: (state: DiagramState) => void;
@@ -112,14 +113,58 @@ export const useDiagramStore = create<Store>((set, get) => ({
   },
 
   removeNode: (id) => {
+    const nodes = get().nodes;
+    const removedNode = nodes.find((n) => n.id === id);
     set({
-      nodes: get().nodes.filter((n) => n.id !== id),
+      nodes: nodes
+        .filter((n) => n.id !== id)
+        .map((n) =>
+          n.parentId === id
+            ? {
+                ...n,
+                parentId: undefined,
+                position: {
+                  x: n.position.x + (removedNode?.position.x ?? 0),
+                  y: n.position.y + (removedNode?.position.y ?? 0),
+                },
+              }
+            : n
+        ),
       edges: get().edges.filter((e) => e.source !== id && e.target !== id),
     });
   },
 
   removeEdge: (id) => {
     set({ edges: get().edges.filter((e) => e.id !== id) });
+  },
+
+  reparentNode: (nodeId, boundaryId) => {
+    const nodes = get().nodes;
+    const node = nodes.find((n) => n.id === nodeId);
+    if (!node) return;
+
+    const oldParent = node.parentId
+      ? nodes.find((n) => n.id === node.parentId)
+      : null;
+    const newParent = boundaryId
+      ? nodes.find((n) => n.id === boundaryId)
+      : null;
+
+    // Convert position: child positions in React Flow are relative to parent
+    let absX = node.position.x + (oldParent?.position.x ?? 0);
+    let absY = node.position.y + (oldParent?.position.y ?? 0);
+
+    const newPosition = newParent
+      ? { x: absX - newParent.position.x, y: absY - newParent.position.y }
+      : { x: absX, y: absY };
+
+    set({
+      nodes: nodes.map((n) =>
+        n.id === nodeId
+          ? { ...n, position: newPosition, parentId: boundaryId ?? undefined }
+          : n
+      ),
+    });
   },
 
   getSerializableState: () => ({
