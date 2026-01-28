@@ -1,0 +1,8 @@
+## Task 1+2: Project init + tracer bullet (PRD issue #1)
+- Initialized Vite + React + TypeScript project with all PRD dependencies
+- Built end-to-end tracer bullet: Zustand store, all 6 node types, Canvas, Toolbar, Sidebar, URL serialization
+- Dark theme via Tailwind CSS, React Flow dark colorMode
+- View/edit mode toggle, add entity buttons, save-to-URL, sidebar detail editing
+- 15 tests passing (store + urlSerializer)
+- Files: src/{types,store,urlSerializer,Canvas,Toolbar,Sidebar,App}.ts(x), src/nodes/*.tsx, vite.config.ts, index.html, package.json
+- Next: boundary drag-into/reparenting, edge labels on canvas, polish
