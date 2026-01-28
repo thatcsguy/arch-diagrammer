@@ -106,7 +106,7 @@ export const useDiagramStore = create<Store>((set, get) => ({
   updateEdgeData: (id, data) => {
     set({
       edges: get().edges.map((e) =>
-        e.id === id ? { ...e, data: { ...e.data, ...data }, label: data.label ?? e.label } : e
+        e.id === id ? { ...e, data: { ...e.data, ...data } } : e
       ),
     });
   },

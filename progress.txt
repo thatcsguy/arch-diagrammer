@@ -6,3 +6,9 @@
 - 15 tests passing (store + urlSerializer)
 - Files: src/{types,store,urlSerializer,Canvas,Toolbar,Sidebar,App}.ts(x), src/nodes/*.tsx, vite.config.ts, index.html, package.json
 - Next: boundary drag-into/reparenting, edge labels on canvas, polish
+
+## Task 3: Edge labels on canvas (PRD issue #1, user story #24)
+- Canvas now derives edge `label` from `edge.data.label` via useMemo mapping
+- Removed redundant `label` sync from store's `updateEdgeData`
+- Files changed: src/Canvas.tsx, src/store.ts
+- Next: boundary drag-into/reparenting, visual polish

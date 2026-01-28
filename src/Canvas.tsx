@@ -1,11 +1,15 @@
 import { ReactFlow, Background, BackgroundVariant, Controls } from '@xyflow/react';
 import { useDiagramStore } from './store';
 import { nodeTypes } from './nodes';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 export function Canvas() {
   const nodes = useDiagramStore((s) => s.nodes);
-  const edges = useDiagramStore((s) => s.edges);
+  const rawEdges = useDiagramStore((s) => s.edges);
+  const edges = useMemo(
+    () => rawEdges.map((e) => ({ ...e, label: e.data?.label || undefined })),
+    [rawEdges],
+  );
   const onNodesChange = useDiagramStore((s) => s.onNodesChange);
   const onEdgesChange = useDiagramStore((s) => s.onEdgesChange);
   const onConnect = useDiagramStore((s) => s.onConnect);
