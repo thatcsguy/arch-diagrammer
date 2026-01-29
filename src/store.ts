@@ -93,7 +93,10 @@ export const useDiagramStore = create<Store>((set, get) => ({
       data: { name: defaults[type] },
       ...(type === 'boundary' ? { style: { width: 300, height: 200 } } : {}),
     };
-    set({ nodes: [...get().nodes, node] });
+    // Insert boundaries at the front so they appear before potential children
+    // (React Flow requires parents before children in the array)
+    const nodes = get().nodes;
+    set({ nodes: type === 'boundary' ? [node, ...nodes] : [...nodes, node] });
   },
 
   updateNodeData: (id, data) => {
@@ -151,20 +154,33 @@ export const useDiagramStore = create<Store>((set, get) => ({
       : null;
 
     // Convert position: child positions in React Flow are relative to parent
-    let absX = node.position.x + (oldParent?.position.x ?? 0);
-    let absY = node.position.y + (oldParent?.position.y ?? 0);
+    const absX = node.position.x + (oldParent?.position.x ?? 0);
+    const absY = node.position.y + (oldParent?.position.y ?? 0);
 
     const newPosition = newParent
       ? { x: absX - newParent.position.x, y: absY - newParent.position.y }
       : { x: absX, y: absY };
 
-    set({
-      nodes: nodes.map((n) =>
-        n.id === nodeId
-          ? { ...n, position: newPosition, parentId: boundaryId ?? undefined }
-          : n
-      ),
+    // Update the node with new position and parentId
+    let updatedNodes = nodes.map((n) =>
+      n.id === nodeId
+        ? { ...n, position: newPosition, parentId: boundaryId ?? undefined }
+        : n
+    );
+
+    // React Flow requires parent nodes to appear BEFORE children in the array.
+    // Reorder so boundary nodes come first, then their children.
+    updatedNodes = updatedNodes.sort((a, b) => {
+      // Boundaries (potential parents) come first
+      if (a.type === 'boundary' && b.type !== 'boundary') return -1;
+      if (a.type !== 'boundary' && b.type === 'boundary') return 1;
+      // Among non-boundaries, nodes without parents come before nodes with parents
+      if (!a.parentId && b.parentId) return -1;
+      if (a.parentId && !b.parentId) return 1;
+      return 0;
     });
+
+    set({ nodes: updatedNodes });
   },
 
   getSerializableState: () => ({

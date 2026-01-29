@@ -30,8 +30,9 @@ describe('DiagramState store', () => {
     store.addNode('boundary', { x: 0, y: 0 });
 
     const { nodes } = useDiagramStore.getState();
+    // Boundary is inserted at front (React Flow requires parents before children)
     expect(nodes.map((n) => n.data.name)).toEqual([
-      'New Database', 'New User', 'New Cloud', 'Service Group', 'Boundary',
+      'Boundary', 'New Database', 'New User', 'New Cloud', 'Service Group',
     ]);
   });
 

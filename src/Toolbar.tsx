@@ -17,7 +17,9 @@ export function Toolbar() {
   const saveToUrl = useDiagramStore((s) => s.saveToUrl);
 
   const handleAdd = (type: EntityType) => {
+    // eslint-disable-next-line react-hooks/purity -- event handler, not render
     const x = 100 + Math.random() * 400;
+    // eslint-disable-next-line react-hooks/purity -- event handler, not render
     const y = 100 + Math.random() * 300;
     addNode(type, { x, y });
   };

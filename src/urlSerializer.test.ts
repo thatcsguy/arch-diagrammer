@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { compressToEncodedURIComponent } from 'lz-string';
 import { serialize, deserialize } from './urlSerializer';
 import type { DiagramState } from './types';
 
@@ -30,7 +31,6 @@ describe('urlSerializer', () => {
   });
 
   it('returns null for valid JSON that is not a diagram', () => {
-    const { compressToEncodedURIComponent } = require('lz-string');
     const compressed = compressToEncodedURIComponent(JSON.stringify({ foo: 'bar' }));
     expect(deserialize(compressed)).toBeNull();
   });
